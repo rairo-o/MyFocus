@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="header-row">
+  <h2>لوحة التحكم</h2>
+  <div class="controls">
+    <button class="ghost" id="btn-today">اليوم</button>
+    <button class="ghost" id="btn-tomorrow">غدًا</button>
+    <label class="small">عرض بتاريخ
+      <input type="date" id="dashboard-date" value="{{ selected_date }}">
+    </label>
+    <!-- زر التصفية الجديد -->
+    <button class="ghost" id="dashboard-filter">تصفية</button>
+  </div>
+</div>
+
+<!-- <h2>مهام اليوم ({{ todays_all|length }})</h2>
+<section class="card">
+  <h3>المطلوب إكماله ({{ todays_pending|length }})</h3>
+  <ul class="today-tasks">
+    {% for t in todays_pending %}
+      <li class="task task-pending">
+        <span class="task-mark">🟡</span>
+        <strong class="task-title">{{ t.title }}</strong>
+        {% if t.description %}<div class="small task-desc">{{ t.description }}</div>{% endif %}
+        <div class="small task-meta">{{ t.date or '' }} • {{ t.category or '' }}</div>
+      </li>
+    {% else %}
+      <li class="small">لا مهام مطلوبة اليوم</li>
+    {% endfor %}
+  </ul>
+
+  <h3 class="done-heading">المكتملة ({{ todays_done|length }})</h3>
+  <ul class="today-tasks">
+    {% for t in todays_done %}
+      <li class="task task-done">
+        <span class="task-mark">✅</span>
+        <strong class="task-title">{{ t.title }}</strong>
+        {% if t.description %}<div class="small task-desc">{{ t.description }}</div>{% endif %}
+        <div class="small task-meta">{{ t.date or '' }} • {{ t.category or '' }}</div>
+      </li>
+    {% else %}
+      <li class="small">لا مهام مكتملة اليوم</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="card">
+  <h3>أحداث اليوم ({{ todays_events|length }})</h3>
+  <ul>
+    {% for e in todays_events %}
+      <li>{{ e.datetime[:16] }} — <strong>{{ e.title }}</strong></li>
+    {% else %}
+      <li>لا أحداث اليوم</li>
+    {% endfor %}
+  </ul>
+</section>
+-->
+
+<div id="dashboard-content">
+  {% include '_dashboard_tasks.html' %}
+</div>
+
+<section class="stats card">
+  <h3>إحصائيات الأسبوع</h3>
+  <p>المهام الكلية: {{ total }} — المكتملة: {{ done }} — النسبة: {{ percent_done }}%</p>
+</section>
+{% endblock %}

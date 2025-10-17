@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>الأحداث</h2>
+
+<div class="events-list">
+  {% for e in events %}
+    <article class="event-card" data-id="{{ e.id }}" aria-expanded="false">
+      <header class="event-summary" tabindex="0">
+        <div class="event-left">
+          <strong class="event-title">{{ e.title }}</strong>
+          <div class="small event-time">{{ e.datetime }}</div>
+        </div>
+        <div class="event-actions">
+          <button class="btn-toggle ghost" aria-label="Toggle details">عرض</button>
+        </div>
+      </header>
+
+      <div class="event-details" aria-hidden="true">
+        {% if e.location %}
+          <div class="small"><strong>المكان:</strong> {{ e.location }}</div>
+        {% endif %}
+        {% if e.description %}
+          <div class="small" style="margin-top:8px"><strong>التفاصيل:</strong><br>{{ e.description }}</div>
+        {% endif %}
+        <div class="event-controls" style="margin-top:10px">
+          <form style="display:inline" method="post" action="{{ url_for('delete_event', item_id=e.id) }}" onsubmit="return confirm('حذف الحدث؟')">
+            <button type="submit" class="ghost">حذف</button>
+          </form>
+        </div>
+      </div>
+    </article>
+  {% else %}
+    <p>لا أحداث</p>
+  {% endfor %}
+</div>
+
+<section class="card">
+  <h3>إضافة حدث</h3>
+  <form method="post" action="{{ url_for('add_event') }}">
+    <label>العنوان<br><input name="title" required></label>
+    <label>التفاصيل<br><textarea name="description"></textarea></label>
+    <label>التاريخ والوقت<br><input type="datetime-local" name="datetime" required></label>
+    <label>المكان<br><input name="location"></label>
+    <button type="submit">إضافة</button>
+  </form>
+</section>
+{% endblock %}

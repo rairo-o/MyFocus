@@ -1,0 +1,142 @@
+/* Modern, soft UI — RTL friendly */
+:root{
+  --bg:#f3f6f9;
+  --panel:#ffffff;
+  --muted:#6b7280;
+  --text:#0f1724;
+  --accent:#3366ff;
+  --accent-2:#6b8cff;
+  --glass: rgba(255,255,255,0.75);
+  --shadow: 0 6px 18px rgba(16,24,40,0.08);
+  --radius:12px;
+  --gap:18px;
+}
+
+/* Dark theme vars */
+body.dark{
+  --bg:#0b1220;
+  --panel:#0f1724;
+  --muted:#9aa4b2;
+  --text:#e6eef8;
+  --accent:#4b7bff;
+  --glass: rgba(255,255,255,0.02);
+  --shadow: 0 8px 24px rgba(2,6,23,0.6);
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, var(--bg), #eef4ff 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+
+
+/* App layout */
+.app{display:flex; gap:var(--gap); min-height:100vh; padding:24px; align-items:flex-start}
+.sidebar{
+  width:260px;
+  background:linear-gradient(180deg, var(--panel), var(--glass));
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  flex-shrink:0;
+  position:sticky; top:24px; height:calc(100vh - 48px); overflow:auto;
+}
+.sidebar h1{
+  margin:0 0 8px; font-size:20px; letter-spacing:0.2px;
+}
+.sidebar nav{display:flex; flex-direction:column; gap:6px; margin-top:12px}
+.sidebar nav a{
+  display:flex; align-items:center; gap:12px; padding:10px 12px;
+  color:var(--text); text-decoration:none; border-radius:10px;
+  transition:all .16s ease;
+  font-weight:600; font-size:14px;
+}
+.sidebar nav a:hover{background:rgba(51,102,255,0.06); transform:translateX(-4px)}
+.sidebar nav a:active{transform:none}
+.side-bottom{position:absolute; bottom:18px; left:18px; right:18px}
+
+/* Main area */
+.main{
+  flex:1;
+  min-width:0;
+}
+.header-row{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:12px}
+.header-row h2{margin:0; font-size:20px}
+.controls{display:flex; gap:8px; align-items:center}
+
+/* Cards & tables */
+.card{
+  background:var(--panel);
+  border-radius:12px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+.table{width:100%; border-collapse:collapse; margin-top:10px; background:transparent; border-radius:8px; overflow:hidden}
+.table thead tr{background:transparent}
+.table th, .table td{
+  padding:12px 14px; text-align:right; vertical-align:middle;
+  border-bottom:1px solid rgba(15,23,36,0.06);
+}
+.table tbody tr:hover{background:rgba(15,23,36,0.02)}
+.filters{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.filters input, .filters select, .filters button{
+  padding:10px 12px; border-radius:10px; border:1px solid rgba(15,23,36,0.06); background:transparent;
+  transition:box-shadow .12s ease, transform .08s ease;
+}
+.filters input:focus, .filters select:focus, .filters button:focus{
+  outline:none; box-shadow:0 6px 18px rgba(51,102,255,0.12);
+  transform:translateY(-1px);
+}
+
+/* Buttons */
+button{
+  cursor:pointer;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:white; border:0; padding:8px 12px; border-radius:9px; font-weight:600;
+  box-shadow:0 6px 18px rgba(51,102,255,0.12);
+}
+button.ghost{
+  background:transparent; color:var(--accent); box-shadow:none; border:1px solid rgba(51,102,255,0.12);
+}
+a.export{color:var(--accent); text-decoration:none; font-weight:600; padding:6px 8px; border-radius:8px}
+
+/* Forms */
+label{display:block; font-size:13px; color:var(--muted); margin-bottom:8px}
+input[type="text"], input[type="date"], input[type="datetime-local"], textarea, select{
+  width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(15,23,36,0.06);
+  background:transparent; color:var(--text); resize:vertical;
+}
+textarea{min-height:90px}
+
+/* Messages */
+.messages{list-style:none; padding:0; margin:0 0 12px}
+.messages li{padding:10px 12px; border-radius:8px; margin-bottom:8px; background:rgba(255,255,255,0.6)}
+.messages li.error{background:linear-gradient(90deg,#ffe9e9,#fff); color:#8b1a1a}
+
+/* Small utils */
+.small{font-size:13px; color:var(--muted)}
+.stats p{margin:6px 0; font-weight:600}
+.notes li, .plans li{background:var(--panel); padding:10px; border-radius:10px; margin-bottom:8px; box-shadow:var(--shadow)}
+
+/* Responsive */
+@media (max-width:980px){
+  .app{flex-direction:column; padding:16px}
+  .sidebar{width:100%; height:auto; position:relative}
+  .side-bottom{position:static; margin-top:12px}
+}
+
+/* RTL tweaks for nice spacing */
+.sidebar nav a{justify-content:flex-start}
+.table th, .table td{text-align:right}
+
+/* focus & accessibility */
+:focus{outline: 3px solid rgba(51,102,255,0.12); outline-offset:2px}

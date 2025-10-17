@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>تعديل خطة</h2>
+<form method="post">
+  <label>العنوان<br><input name="title" value="{{ plan.title }}" required></label>
+  <label>الوصف<br><textarea name="description">{{ plan.description or '' }}</textarea></label>
+  <label>التاريخ المستهدف<br><input type="date" name="target_date" value="{{ plan.target_date or '' }}"></label>
+  <button type="submit">حفظ</button>
+  <a href="{{ url_for('plans_page') }}" class="ghost">إلغاء</a>
+</form>
+{% endblock %}

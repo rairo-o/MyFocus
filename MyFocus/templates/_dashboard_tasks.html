@@ -1,0 +1,42 @@
+<section class="card" id="dashboard-tasks">
+  <h2>{{ selected_label }} ({{ todays_all|length }})</h2>
+
+  <h3>المطلوب إكماله ({{ todays_pending|length }})</h3>
+  <ul class="today-tasks">
+    {% for t in todays_pending %}
+      <li class="task task-pending">
+        <span class="task-mark">🟡</span>
+        <strong class="task-title">{{ t.title }}</strong>
+        {% if t.description %}<div class="small task-desc">{{ t.description }}</div>{% endif %}
+        <div class="small task-meta">{{ t.date or '' }} • {{ t.category or '' }}</div>
+      </li>
+    {% else %}
+      <li class="small">لا مهام مطلوبة اليوم</li>
+    {% endfor %}
+  </ul>
+
+  <h3 class="done-heading">المكتملة ({{ todays_done|length }})</h3>
+  <ul class="today-tasks">
+    {% for t in todays_done %}
+      <li class="task task-done">
+        <span class="task-mark">✅</span>
+        <strong class="task-title">{{ t.title }}</strong>
+        {% if t.description %}<div class="small task-desc">{{ t.description }}</div>{% endif %}
+        <div class="small task-meta">{{ t.date or '' }} • {{ t.category or '' }}</div>
+      </li>
+    {% else %}
+      <li class="small">لا مهام مكتملة اليوم</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="card" id="dashboard-events">
+  <h3>أحداث اليوم ({{ todays_events|length }})</h3>
+  <ul>
+    {% for e in todays_events %}
+      <li>{{ e.datetime[:16] }} — <strong>{{ e.title }}</strong></li>
+    {% else %}
+      <li>لا أحداث اليوم</li>
+    {% endfor %}
+  </ul>
+</section>

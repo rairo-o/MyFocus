@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>الملاحظات</h2>
+
+<ul class="notes">
+  {% for n in notes %}
+    <li><small>{{ n.created_at[:16] }}</small><p>{{ n.content }}</p></li>
+  {% else %}
+    <li>لا ملاحظات</li>
+  {% endfor %}
+</ul>
+
+<section class="card">
+  <h3>إضافة ملاحظة</h3>
+  <form method="post" action="{{ url_for('add_note') }}">
+    <textarea name="content" required></textarea>
+    <button type="submit">حفظ</button>
+  </form>
+</section>
+{% endblock %}

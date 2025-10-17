@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>الخطط</h2>
+
+<ul class="plans">
+  {% for p in plans %}
+    <li>
+      <strong>{{ p.title }}</strong> — {{ p.target_date or 'بدون تاريخ' }}
+      <p>{{ p.description or '' }}</p>
+      <div class="small">
+        <a href="{{ url_for('edit_plan', item_id=p.id) }}">تعديل</a>
+        <form style="display:inline" method="post" action="{{ url_for('delete_plan', item_id=p.id) }}" onsubmit="return confirm('حذف الخطة؟')">
+          <button type="submit" class="ghost">حذف</button>
+        </form>
+      </div>
+    </li>
+  {% else %}
+    <li>لا خطط</li>
+  {% endfor %}
+</ul>
+
+<section class="card">
+  <h3>إضافة خطة</h3>
+  <form method="post" action="{{ url_for('add_plan') }}">
+    <label>العنوان<br><input name="title" required></label>
+    <label>الوصف<br><textarea name="description"></textarea></label>
+    <label>التاريخ المستهدف (اختياري)<br><input type="date" name="target_date"></label>
+    <button type="submit">إضافة</button>
+  </form>
+</section>
+{% endblock %}

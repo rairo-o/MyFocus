@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>الملاحظات</h2>
+
+<ul class="notes">
+  {% for n in notes %}
+    <li>
+      <small>{{ n.created_at[:16] }}</small>
+      <p>{{ n.content }}</p>
+      <div class="small">
+        <a href="{{ url_for('edit_note', item_id=n.id) }}">تعديل</a>
+        <form style="display:inline" method="post" action="{{ url_for('delete_note', item_id=n.id) }}" onsubmit="return confirm('حذف الملاحظة؟')">
+          <button type="submit" class="ghost">حذف</button>
+        </form>
+      </div>
+    </li>
+  {% else %}
+    <li>لا ملاحظات</li>
+  {% endfor %}
+</ul>
+
+<section class="card">
+  <h3>إضافة ملاحظة</h3>
+  <form method="post" action="{{ url_for('add_note') }}">
+    <textarea name="content" required></textarea>
+    <button type="submit">حفظ</button>
+  </form>
+</section>
+{% endblock %}

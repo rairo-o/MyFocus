@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>المهام</h2>
+
+<form method="get" class="filters">
+  <input name="q" placeholder="بحث..." value="{{ q }}">
+  <select name="period" id="tasks-period">
+    <option value="all" {% if period=='all' %}selected{% endif %}>الكل</option>
+    <option value="day" {% if period=='day' %}selected{% endif %}>اليوم</option>
+    <option value="tomorrow" {% if period=='tomorrow' %}selected{% endif %}>غدًا</option>
+    <option value="week" {% if period=='week' %}selected{% endif %}>الأسبوع</option>
+    <option value="month" {% if period=='month' %}selected{% endif %}>الشهر</option>
+    <option value="date" {% if period=='date' %}selected{% endif %}>تاريخ محدد</option>
+  </select>
+  <input type="date" name="date" id="tasks-date" value="{{ request.args.get('date','') }}" {% if period!='date' %}style="display:none"{% endif %}>
+  <button type="submit">تصفية</button>
+  <a class="export" href="{{ url_for('tasks_export_csv') }}">تصدير CSV</a>
+  <a class="export" href="{{ url_for('tasks_export_pdf') }}">تصدير PDF</a>
+</form>
+
+<script>
+document.getElementById('tasks-period')?.addEventListener('change', function(e){
+  const d = document.getElementById('tasks-date');
+  if(this.value === 'date') d.style.display = 'inline-block';
+  else d.style.display = 'none';
+});
+</script>
+
+<table class="table">
+  <thead><tr><th>عنوان</th><th>تاريخ</th><th>فئة</th><th>حالة</th><th>إجراءات</th></tr></thead>
+  <tbody>
+  {% for t in tasks %}
+    <tr>
+      <td>{{ t.title }}</td>
+      <td>{{ t.date or '' }}</td>
+      <td>{{ t.category or '' }}</td>
+      <td>{{ t.status }}</td>
+      <td>
+        <form style="display:inline" method="post" action="{{ url_for('toggle_task', item_id=t.id) }}">
+          <button type="submit">تبديل</button>
+        </form>
+        <a href="{{ url_for('edit_task', item_id=t.id) }}"> تعديل</a>
+        <form style="display:inline" method="post" action="{{ url_for('delete_task', item_id=t.id) }}" onsubmit="return confirm('حذف؟')">
+          <button type="submit">حذف</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="5">لا مهام</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<section class="card">
+  <h3>إضافة مهمة جديدة</h3>
+  <form method="post" action="{{ url_for('add_task') }}">
+    <label>العنوان<br><input name="title" required></label>
+    <label>الوصف<br><textarea name="description"></textarea></label>
+    <label>الفئة<br><input name="category"></label>
+    <label>التاريخ<br><input type="date" name="date" required></label>
+    <label>الحالة<br>
+      <select name="status">
+        <option>Pending</option>
+        <option>Done</option>
+      </select>
+    </label>
+    <button type="submit">إضافة</button>
+  </form>
+</section>
+{% endblock %}
