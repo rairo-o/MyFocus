@@ -82,6 +82,158 @@ body{
   transform:translateY(-1px);
 }
 
+/* Filters — unified dark style + selected/active state */
+.filters {
+  align-items:center;
+  gap:10px;
+}
+.filters input,
+.filters select,
+.filters button {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: box-shadow .14s ease, border-color .12s ease, transform .06s ease, background .12s ease;
+  font-size:14px;
+}
+
+/* Make the select visually consistent and compact */
+.filters select {
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.06) 50%),
+    linear-gradient(135deg, rgba(255,255,255,0.06) 50%, transparent 50%);
+  background-position: calc(100% - 16px) calc(1em + 2px), calc(100% - 11px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+}
+
+/* Active / selected visual state — highlighted accent */
+.filters select:focus,
+.filters input:focus,
+.filters button:focus,
+.filters select.active {
+  border-color: rgba(47,139,255,0.28);
+  box-shadow: 0 10px 30px rgba(47,139,255,0.10);
+  background: linear-gradient(180deg, rgba(47,139,255,0.03), rgba(255,255,255,0.02));
+}
+
+/* Explicit "selected" look for the submit/filter button when a non-default period is chosen */
+#tasks-period.active,
+#tasks-date.active {
+  border-color: rgba(47,139,255,0.28);
+  box-shadow: 0 8px 24px rgba(47,139,255,0.08);
+}
+
+/* Slightly dim placeholder/default to reduce contrast */
+.filters option[disabled] { color: var(--muted); }
+
+/* Inputs / selects / textareas — dark-friendly unified style */
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="search"],
+input[type="email"],
+textarea,
+select,
+.filters input,
+.filters select,
+.card form input,
+.card form textarea,
+.card form select {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: box-shadow .16s ease, border-color .12s ease, transform .06s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font: inherit;
+}
+
+/* Smaller compact inputs in filters / headers */
+.filters input,
+.filters select {
+  padding: 8px 10px;
+  font-size: 14px;
+  background: rgba(255,255,255,0.015);
+}
+
+/* Placeholder / muted text */
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.95;
+}
+
+/* Focus / hover effects */
+input:focus,
+textarea:focus,
+select:focus,
+.filters input:focus,
+.filters select:focus {
+  outline: none;
+  border-color: rgba(47,139,255,0.22);
+  box-shadow: 0 8px 30px rgba(47,139,255,0.10);
+  transform: translateY(-1px);
+}
+
+/* Disabled / readonly */
+input[disabled],
+textarea[disabled],
+select[disabled],
+input[readonly],
+textarea[readonly]{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Date/time pickers - keep compact and dark */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"]{
+  padding-right: 12px;
+}
+
+/* Select arrow color (non-editable in some browsers but improve fallback) */
+select {
+  background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.06) 50%),
+                    linear-gradient(135deg, rgba(255,255,255,0.06) 50%, transparent 50%);
+  background-position: calc(100% - 16px) calc(1em + 2px), calc(100% - 11px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* Buttons inside forms: keep existing accent but slightly flatter for dark UI */
+.card form button,
+.filters button {
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight:700;
+  box-shadow: 0 6px 18px rgba(47,139,255,0.08);
+}
+
+/* Ghost / secondary controls */
+button.ghost, .ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--accent-1);
+}
+
+/* Ensure consistency for inputs inside table / lists */
+.table input,
+.table select,
+.table textarea {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.03);
+  padding:6px 8px;
+  border-radius:6px;
+}
+
 /* Buttons */
 button{
   cursor:pointer;
@@ -163,6 +315,131 @@ textarea{min-height:90px}
 .card-summary:focus{outline:none; box-shadow:0 8px 20px rgba(47,139,255,0.06)}
 .card-details{padding:0 14px; max-height:0; overflow:hidden; opacity:0; transition: max-height .28s ease, opacity .28s ease, padding .28s ease}
 .collapsible-card.expanded .card-details{padding:10px 14px 16px; max-height:420px; opacity:1}
+
+/* Dropdowns & Edit forms — unified dark appearance */
+select,
+.card form select,
+.card form input,
+.card form textarea,
+.card form input[type="date"],
+.card form input[type="datetime-local"] {
+  background: linear-gradient(180deg, rgba(8,18,30,0.85), rgba(12,22,34,0.85));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 10px;
+  border-radius: 8px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: box-shadow .14s ease, border-color .12s ease, transform .04s ease;
+}
+
+/* Make select dropdown arrow subtle and matching */
+select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.06) 50%),
+    linear-gradient(135deg, rgba(255,255,255,0.06) 50%, transparent 50%),
+    linear-gradient(180deg, rgba(8,18,30,0.85), rgba(12,22,34,0.85));
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 12px) calc(1em + 2px), 0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+/* Options (note: some browsers limit option styling) */
+select option {
+  background: linear-gradient(180deg, rgba(8,18,30,0.95), rgba(10,20,32,0.95));
+  color: var(--text);
+}
+
+/* Hover / active option (for browsers that support it) */
+select option:hover,
+select option:checked {
+  background: linear-gradient(180deg, rgba(47,139,255,0.06), rgba(47,139,255,0.03));
+  color: var(--text);
+}
+
+/* Focus / hover for edit forms and selects */
+.card form input:focus,
+.card form textarea:focus,
+.card form select:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(47,139,255,0.28);
+  box-shadow: 0 10px 30px rgba(47,139,255,0.10);
+  transform: translateY(-1px);
+}
+
+/* Lighter border for modal/edit forms to separate from panel */
+.card form input,
+.card form textarea,
+.card form select {
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Smaller selects inside filters keep previous style but match colors */
+.filters select {
+  background: linear-gradient(180deg, rgba(8,18,30,0.85), rgba(12,22,34,0.85));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Accessibility: ensure contrast for disabled/read-only */
+.card form input[disabled],
+.card form textarea[disabled],
+.card form select[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* توحيد مظهر قائمة التصفية الرئيسية في صفحة المهام */
+#tasks-period,
+.filters select#tasks-period {
+  background: linear-gradient(180deg, rgba(8,18,30,0.95), rgba(12,22,34,0.95));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 14px) center;
+  background-size: 14px;
+}
+
+/* سهم مخصّص أبيض (SVG inline). يعمل كخيار احتياطي في المتصفحات الحديثة */
+#tasks-period {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23ffffff' d='M7 10l5 5 5-5z'/></svg>");
+}
+
+/* حاول تلوين عناصر الخيار؛ ليست مدعومة في كل المتصفحات لكن تفيد البعض */
+#tasks-period option {
+  background-color: rgba(8,18,30,0.95) !important;
+  color: var(--text) !important;
+}
+
+/* إخفاء السهم الافتراضي في IE/Edge القديم */
+#tasks-period::-ms-expand { display: none; }
+
+/* حالة التركيز / المحدد */
+#tasks-period:focus,
+.filters select#tasks-period:focus {
+  outline: none;
+  border-color: rgba(47,139,255,0.28);
+  box-shadow: 0 10px 30px rgba(47,139,255,0.10);
+  transform: translateY(-1px);
+}
+
+/* ضمان التناسق مع بقية الحقول */
+.filters select#tasks-period,
+.filters input,
+.filters button {
+  background: linear-gradient(180deg, rgba(8,18,30,0.95), rgba(12,22,34,0.95));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+}
 
 /* Responsive */
 @media (max-width:980px){

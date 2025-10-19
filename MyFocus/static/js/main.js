@@ -157,3 +157,16 @@ document.addEventListener('click', async function(e){
     btn.disabled = false;
   }
 });
+
+// Mark select/date as active when server-side sets a selected option/value
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    const period = document.getElementById('tasks-period');
+    const tasksDate = document.getElementById('tasks-date');
+    if(period){
+      // if any option has selected attribute (server rendered) mark active
+      if(period.querySelector('option[selected]')) period.classList.add('active');
+    }
+    if(tasksDate && tasksDate.value) tasksDate.classList.add('active');
+  } catch(e){ /* ignore */ }
+});

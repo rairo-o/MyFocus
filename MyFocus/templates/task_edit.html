@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>تعديل مهمة</h2>
-<form method="post">
-  <label>العنوان<br><input name="title" value="{{ task.title }}" required></label>
-  <label>الوصف<br><textarea name="description">{{ task.description or '' }}</textarea></label>
-  <label>الفئة<br><input name="category" value="{{ task.category or '' }}"></label>
-  <label>التاريخ<br><input type="date" name="date" value="{{ task.date }}"></label>
-  <label>الحالة<br>
-    <select name="status">
-      <option {% if task.status=='Pending' %}selected{% endif %}>Pending</option>
-      <option {% if task.status=='Done' %}selected{% endif %}>Done</option>
-    </select>
-  </label>
-  <button type="submit">حفظ</button>
-  <a href="{{ url_for('tasks_page') }}">إلغاء</a>
-</form>
+
+<section class="card">
+  <form method="post">
+    <label>العنوان<br><input name="title" value="{{ task.title }}" required></label>
+    <label>الوصف<br><textarea name="description">{{ task.description or '' }}</textarea></label>
+    <label>الفئة<br><input name="category" value="{{ task.category or '' }}"></label>
+    <label>التاريخ<br><input type="date" name="date" value="{{ task.date }}"></label>
+    <label>الحالة<br>
+      <select name="status">
+        <option {% if task.status=='Pending' %}selected{% endif %}>Pending</option>
+        <option {% if task.status=='Done' %}selected{% endif %}>Done</option>
+      </select>
+    </label>
+    <button type="submit">حفظ</button>
+    <a href="{{ url_for('tasks_page') }}">إلغاء</a>
+  </form>
+</section>
 {% endblock %}

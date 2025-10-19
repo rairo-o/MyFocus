@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>تعديل ملاحظة</h2>
-<form method="post">
-  <label>العنوان<br><input name="title" value="{{ note.title }}" required></label>
-  <label>المحتوى<br><textarea name="content" required>{{ note.content }}</textarea></label>
-  <button type="submit">حفظ</button>
-  <a href="{{ url_for('notes_page') }}" class="ghost">إلغاء</a>
-</form>
+
+<section class="card">
+  <form method="post">
+    <label>العنوان<br><input name="title" value="{{ note.title }}" required></label>
+    <label>المحتوى<br><textarea name="content" required>{{ note.content }}</textarea></label>
+    <button type="submit">حفظ</button>
+    <a href="{{ url_for('notes_page') }}" class="ghost">إلغاء</a>
+  </form>
+</section>
+
 {% endblock %}
