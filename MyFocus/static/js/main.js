@@ -27,17 +27,32 @@ document.addEventListener('click', function(e){
   }
 });
 
-// Allow keyboard toggling (Enter / Space) when header focused
+// General expand/collapse for cards (Events / Notes / Plans)
+document.addEventListener('click', function(e){
+  const card = e.target.closest('.collapsible-card');
+  if(!card) return;
+  // toggle on summary click or button
+  if(e.target.closest('.btn-toggle') || e.target.closest('.card-summary')){
+    const expanded = card.classList.toggle('expanded');
+    card.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    const details = card.querySelector('.card-details');
+    if(details) details.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+    const btn = card.querySelector('.btn-toggle');
+    if(btn) btn.textContent = expanded ? 'إخفاء' : 'عرض';
+  }
+});
+
+// keyboard: Enter/Space on focused summary
 document.addEventListener('keydown', function(e){
   if(e.key === 'Enter' || e.key === ' '){
     const el = document.activeElement;
-    if(el && el.classList && el.classList.contains('event-summary')){
+    if(el && el.classList && el.classList.contains('card-summary')){
       e.preventDefault();
-      const card = el.closest('.event-card');
+      const card = el.closest('.collapsible-card');
       if(card){
         const expanded = card.classList.toggle('expanded');
         card.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-        const details = card.querySelector('.event-details');
+        const details = card.querySelector('.card-details');
         if(details) details.setAttribute('aria-hidden', expanded ? 'false' : 'true');
         const btn = card.querySelector('.btn-toggle');
         if(btn) btn.textContent = expanded ? 'إخفاء' : 'عرض';
@@ -53,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const btnTomorrow = document.getElementById('btn-tomorrow');
   const btnFilter = document.getElementById('dashboard-filter');
   const content = document.getElementById('dashboard-content');
-//Consol.log it's tepertry buttons
+
   async function loadFor(d){
     console.log('loadFor called', d);
     try{
@@ -68,6 +83,9 @@ document.addEventListener('DOMContentLoaded', function(){
       console.error(err);
     }
   }
+
+  // expose globally so toggle handler can refresh dashboard
+  window.loadDashboardFor = loadFor;
 
   // عند تغيير التاريخ لا يتم التحميل تلقائياً — ينتظر الضغط على "تصفية"
   if(dateInput){
@@ -99,4 +117,43 @@ document.addEventListener('DOMContentLoaded', function(){
     const d = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().slice(0,10);
     loadFor(d);
   });
+});
+
+// Global click handler: toggle task from dashboard/tasks (delegation)
+// توحيد التعامل مع عناصر .task-toggle المستخدمة في الصفحتين
+document.addEventListener('click', async function(e){
+  const btn = e.target.closest('.task-toggle');
+  if(!btn) return;
+  e.preventDefault();
+  const id = btn.getAttribute('data-id');
+  if(!id) return;
+
+  const prevPressed = btn.getAttribute('aria-pressed') === 'true';
+
+  // optimistic UI: عكس الحالة فورًا بصريًا
+  btn.setAttribute('aria-pressed', (!prevPressed).toString());
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`/tasks/toggle_ajax/${id}`, { method: 'POST' });
+    if(!res.ok) throw new Error('Network error: ' + res.status);
+    const json = await res.json();
+    if(!json.ok) throw new Error(json.error || 'Toggle failed');
+
+    // اضبط aria-pressed حسب الحالة الفعلية المطلوبة من السيرفر
+    btn.setAttribute('aria-pressed', json.status === 'Done' ? 'true' : 'false');
+
+    // إعادة تحميل جزئي للوحة لإظهار التغيير في القوائم والأعداد
+    const dateInput = document.getElementById('dashboard-date');
+    const d = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().slice(0,10);
+    if(window.loadDashboardFor) window.loadDashboardFor(d);
+    else location.reload();
+  } catch (err) {
+    console.error(err);
+    // revert optimistic UI on error
+    btn.setAttribute('aria-pressed', prevPressed.toString());
+    alert('حدث خطأ أثناء تغيير حالة المهمة.');
+  } finally {
+    btn.disabled = false;
+  }
 });

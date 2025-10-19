@@ -2,9 +2,11 @@
   <h2>{{ selected_label }} ({{ todays_all|length }})</h2>
 
   <h3>المطلوب إكماله ({{ todays_pending|length }})</h3>
-  <ul class="today-tasks">
+  <ul class="today-tasks" id="pending-list">
     {% for t in todays_pending %}
-      <li class="task task-pending">
+      <li class="task task-pending" data-id="{{ t.id }}">
+        <!-- موحد: استخدم نفس زر التبديل المستخدم في صفحة المهام -->
+        <button class="task-toggle" data-id="{{ t.id }}" aria-pressed="false" title="تبديل الحالة"></button>
         <span class="task-mark">🟡</span>
         <strong class="task-title">{{ t.title }}</strong>
         {% if t.description %}<div class="small task-desc">{{ t.description }}</div>{% endif %}
@@ -16,9 +18,11 @@
   </ul>
 
   <h3 class="done-heading">المكتملة ({{ todays_done|length }})</h3>
-  <ul class="today-tasks">
+  <ul class="today-tasks" id="done-list">
     {% for t in todays_done %}
-      <li class="task task-done">
+      <li class="task task-done" data-id="{{ t.id }}">
+        <!-- موحد: زر تبديل الحالة (سيعكس الحالة عبر aria-pressed) -->
+        <button class="task-toggle" data-id="{{ t.id }}" aria-pressed="true" title="تبديل الحالة"></button>
         <span class="task-mark">✅</span>
         <strong class="task-title">{{ t.title }}</strong>
         {% if t.description %}<div class="small task-desc">{{ t.description }}</div>{% endif %}

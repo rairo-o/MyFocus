@@ -111,7 +111,8 @@ def dashboard_data():
 @app.route('/tasks')
 def tasks_page():
     q = request.args.get('q', '').strip()
-    period = request.args.get('period', 'all')
+    # العرض الافتراضي: مهام اليوم
+    period = request.args.get('period', 'day')
     today = date.today()
     range_filter = None
     if period == 'day':
@@ -173,6 +174,15 @@ def delete_task(item_id):
 def toggle_task(item_id):
     task_model.toggle_status(item_id)
     return redirect(url_for('tasks_page'))
+
+@app.route('/tasks/toggle_ajax/<int:item_id>', methods=['POST'])
+def toggle_task_ajax(item_id):
+    # تبديل الحالة (Done <-> Pending) وإرجاع الحالة الجديدة كـ JSON
+    task_model.toggle_status(item_id)
+    t = task_model.get(item_id)
+    if not t:
+        return jsonify({'ok': False, 'error': 'Not found'}), 404
+    return jsonify({'ok': True, 'status': t['status']})
 
 @app.route('/tasks/export/csv')
 def tasks_export_csv():
@@ -253,11 +263,34 @@ def notes_page():
 
 @app.route('/notes/add', methods=['POST'])
 def add_note():
+    title = request.form.get('title', '').strip()
     content = request.form.get('content', '').strip()
-    if not content:
-        flash('الملاحظة فارغة', 'error')
+    if not title:
+        flash('عنوان الملاحظة مطلوب', 'error')
         return redirect(url_for('notes_page'))
-    note_model.create(content=content)
+    note_model.create(title=title, content=content)
+    return redirect(url_for('notes_page'))
+
+# Notes - تعديل وحذف
+@app.route('/notes/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_note(item_id):
+    item = note_model.get(item_id)
+    if not item:
+        flash('الملاحظة غير موجودة', 'error')
+        return redirect(url_for('notes_page'))
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        content = request.form.get('content', '').strip()
+        if not title:
+            flash('العنوان مطلوب', 'error')
+            return redirect(url_for('edit_note', item_id=item_id))
+        note_model.update(item_id, title, content)
+        return redirect(url_for('notes_page'))
+    return render_template('note_edit.html', note=item)
+
+@app.route('/notes/delete/<int:item_id>', methods=['POST'])
+def delete_note(item_id):
+    note_model.delete(item_id)
     return redirect(url_for('notes_page'))
 
 # Plans
@@ -276,28 +309,6 @@ def add_plan():
                       description=request.form.get('description', '').strip() or None,
                       target_date=request.form.get('target_date', '').strip() or None)
     return redirect(url_for('plans_page'))
-
-# ...existing code...
-# Notes - تعديل وحذف
-@app.route('/notes/edit/<int:item_id>', methods=['GET', 'POST'])
-def edit_note(item_id):
-    item = note_model.get(item_id)
-    if not item:
-        flash('الملاحظة غير موجودة', 'error')
-        return redirect(url_for('notes_page'))
-    if request.method == 'POST':
-        content = request.form.get('content', '').strip()
-        if not content:
-            flash('المحتوى فارغ', 'error')
-            return redirect(url_for('edit_note', item_id=item_id))
-        note_model.update(item_id, content)
-        return redirect(url_for('notes_page'))
-    return render_template('note_edit.html', note=item)
-
-@app.route('/notes/delete/<int:item_id>', methods=['POST'])
-def delete_note(item_id):
-    note_model.delete(item_id)
-    return redirect(url_for('notes_page'))
 
 # Plans - تعديل وحذف
 @app.route('/plans/edit/<int:item_id>', methods=['GET', 'POST'])

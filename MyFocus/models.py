@@ -162,9 +162,12 @@ class notes:
         return _connect(notes.DBFILE)
 
     @staticmethod
-    def create(content):
+    def create(title, content):
         conn = notes._conn(); cur = conn.cursor()
-        cur.execute("INSERT INTO notes (content,created_at) VALUES (?,?)", (content, datetime.utcnow().isoformat()))
+        cur.execute(
+            "INSERT INTO notes (title,content,created_at) VALUES (?,?,?)",
+            (title, content, datetime.utcnow().isoformat())
+        )
         conn.commit(); conn.close()
 
     @staticmethod
@@ -183,9 +186,9 @@ class notes:
         return dict(row) if row else None
 
     @staticmethod
-    def update(item_id, content):
+    def update(item_id, title, content):
         conn = notes._conn(); cur = conn.cursor()
-        cur.execute("UPDATE notes SET content=? WHERE id=?", (content, item_id))
+        cur.execute("UPDATE notes SET title=?, content=? WHERE id=?", (title, content, item_id))
         conn.commit(); conn.close()
 
     @staticmethod
@@ -233,4 +236,3 @@ class plans:
         conn = plans._conn(); cur = conn.cursor()
         cur.execute("DELETE FROM plans WHERE id=?", (item_id,))
         conn.commit(); conn.close()
-# ...existing code...

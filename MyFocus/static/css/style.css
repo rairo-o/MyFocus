@@ -1,4 +1,3 @@
-/* ...existing code... */
 /* Dark-first palette — no pure white backgrounds, text is white only */
 :root{
   --bg-1:#071022;      /* page background top */
@@ -141,8 +140,6 @@ textarea{min-height:90px}
 .done-heading{margin-top:14px}
 /* --- END INSERT --- */
 
-/* ...existing code...1 */
-
 /* Event card expand/collapse */
 .events-list{display:block; margin:6px 0}
 .event-card{background: linear-gradient(180deg, rgba(14,36,54,0.9), rgba(10,28,46,0.85)); border-radius:10px; margin-bottom:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.03)}
@@ -160,7 +157,12 @@ textarea{min-height:90px}
 /* small tweaks for collapsed summary hover */
 .event-summary:hover{background: rgba(255,255,255,0.01)}
 
-/* ...existing code...1 */
+/* Collapsible card shared styles (Events / Notes / Plans) */
+.collapsible-card{border-radius:10px; margin-bottom:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(14,36,54,0.9), rgba(10,28,46,0.85))}
+.card-summary{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; cursor:pointer}
+.card-summary:focus{outline:none; box-shadow:0 8px 20px rgba(47,139,255,0.06)}
+.card-details{padding:0 14px; max-height:0; overflow:hidden; opacity:0; transition: max-height .28s ease, opacity .28s ease, padding .28s ease}
+.collapsible-card.expanded .card-details{padding:10px 14px 16px; max-height:420px; opacity:1}
 
 /* Responsive */
 @media (max-width:980px){
@@ -175,4 +177,3 @@ textarea{min-height:90px}
 
 /* focus & accessibility */
 :focus{outline: 3px solid rgba(47,139,255,0.12); outline-offset:2px}
-/* ...existing code... */

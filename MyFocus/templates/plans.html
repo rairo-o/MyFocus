@@ -2,22 +2,35 @@
 {% block content %}
 <h2>الخطط</h2>
 
-<ul class="plans">
+<div class="plans-list">
   {% for p in plans %}
-    <li>
-      <strong>{{ p.title }}</strong> — {{ p.target_date or 'بدون تاريخ' }}
-      <p>{{ p.description or '' }}</p>
-      <div class="small">
-        <a href="{{ url_for('edit_plan', item_id=p.id) }}">تعديل</a>
-        <form style="display:inline" method="post" action="{{ url_for('delete_plan', item_id=p.id) }}" onsubmit="return confirm('حذف الخطة؟')">
-          <button type="submit" class="ghost">حذف</button>
-        </form>
+    <article class="collapsible-card plan-card" data-id="{{ p.id }}" aria-expanded="false">
+      <header class="card-summary plan-summary" tabindex="0">
+        <div>
+          <strong class="item-title">{{ p.title }}</strong>
+          <div class="small">{{ p.target_date or 'بدون تاريخ' }}</div>
+        </div>
+        <div class="actions">
+          <button class="btn-toggle ghost" aria-label="Toggle details">عرض</button>
+        </div>
+      </header>
+
+      <div class="card-details plan-details" aria-hidden="true">
+        {% if p.description %}
+          <p>{{ p.description }}</p>
+        {% endif %}
+        <div class="small" style="margin-top:8px">
+          <a href="{{ url_for('edit_plan', item_id=p.id) }}" class="ghost"> تعديل</a>
+          <form style="display:inline" method="post" action="{{ url_for('delete_plan', item_id=p.id) }}" onsubmit="return confirm('حذف الخطة؟')">
+            <button type="submit" class="ghost">حذف</button>
+          </form>
+        </div>
       </div>
-    </li>
+    </article>
   {% else %}
-    <li>لا خطط</li>
+    <p>لا خطط</p>
   {% endfor %}
-</ul>
+</div>
 
 <section class="card">
   <h3>إضافة خطة</h3>
