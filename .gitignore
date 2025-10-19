@@ -1,0 +1,39 @@
+# ================================
+# Ignore Python / Flask temporary files
+# ================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+*.venv
+venv/
+env/
+.venv/
+
+# ================================
+# Ignore local databases
+# ================================
+database.db
+MyFocus/database.db
+
+# ================================
+# Ignore runtime and log files
+# ================================
+*.log
+*.pid
+instance/
+*.sqlite3
+
+# ================================
+# Ignore system / editor files
+# ================================
+.DS_Store
+Thumbs.db
+
+# ================================
+# Ignore local scripts (optional)
+# ================================
+run_myfocus.sh
+stop_myfocus.sh
+
